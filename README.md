@@ -4,6 +4,15 @@ Projeto de modernização, refatoração e expansão funcional de um visualizado
 
 ---
 
+## 📌 Sumário
+* [Créditos e Origem do Código](#créditos-e-origem-do-código)
+* [Fundamentação Teórica e Inovações](#fundamentação-teórica-e-inovações)
+* [Comparativo: Código Antigo vs. Reformulado](#comparativo-código-antigo-vs-código-reformulado)
+* [Análise de Limitações Didáticas e Técnicas](#análise-de-limitações-didáticas-e-técnicas)
+* [Download e Execução do Programa (.exe)](#download-e-execução-do-programa-exe)
+* [Executando via Código Fonte](#executando-via-código-fonte)
+  
+---
 ## Créditos e Origem do Código
 
 Este projeto foi desenvolvido como uma evolução aprimorada a partir do código aberto original:
