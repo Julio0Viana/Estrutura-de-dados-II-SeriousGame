@@ -86,8 +86,8 @@ Caso prefira rodar ou modificar o projeto diretamente em Python:
 ```bash
 python visualizador_arvore.py
 ```
-##Compilando o Próprio Executável (.exe)
-###Para gerar um executável único via PowerShell:
+## Compilando o Próprio Executável (.exe)
+### Para gerar um executável único via PowerShell:
 ```bash
 python -m pyinstaller --noconfirm --onefile --windowed --add-data "CAMINHO_DO_CUSTOMTKINTER;customtkinter/" visualizador_arvore.py
 ```
