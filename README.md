@@ -4,7 +4,7 @@ Projeto de modernização, refatoração e expansão funcional de um visualizado
 
 ---
 
-## 📌 Sumário
+## Sumário
 * [Créditos e Origem do Código](#créditos-e-origem-do-código)
 * [Fundamentação Teórica e Inovações](#fundamentação-teórica-e-inovações)
 * [Comparativo: Código Antigo vs. Reformulado](#comparativo-código-antigo-vs-código-reformulado)
