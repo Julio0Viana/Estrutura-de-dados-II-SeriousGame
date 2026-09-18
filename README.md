@@ -54,6 +54,7 @@ A **Árvore Binária de Busca (BST)** é uma estrutura de dados hierárquica que
 | **Entrada de Dados** | Caixas de texto fixas no painel principal. | Diálogos modais sob demanda (`CTkInputDialog`). |
 | **Interatividade** | Somente via botões da interface. | Clique direto no nó + remoção por teclado (`Delete`). |
 | **Inclusão em Massa** | Apenas inserção individual manual. | Gerador automático de 1 a 99 nós (Aleatório/Crescente/Decrescente). |
+| Apenas **Árvore BST** | **Árvore de busca binária simples com complexidade O(n) na maioria dos casos | Árvore BST e Árvore AVL com complexidade de tempo O(log n) na maioria dos casos com rotações de balanceamento **|
 | **Idiomas e Localização** | Inglês com nomenclaturas mistas. | **Português (pt-BR)** padronizado. |
 
 ---
@@ -65,7 +66,7 @@ A **Árvore Binária de Busca (BST)** é uma estrutura de dados hierárquica que
 * **Limitação Técnica:** Forte acoplamento entre a lógica de negócio e a interface gráfica (manipulação direta de elementos do `Canvas` misturada com estruturas de dados em listas de listas).
 
 ### 2. Limitações da Versão Atual (Trabalhos Futuros)
-* **Limitação Didática:** Por ser uma BST pura, ela não realiza rotações automáticas para balanceamento (como árvores AVL ou Red-Black). Árvores puras muito profundas exigem uso frequente do Zoom/Pan.
+* **Limitação Didática:** Árvores puras muito profundas exigem uso frequente do Zoom/Pan.
 * **Limitação Técnica:** A biblioteca `Tkinter/CustomTkinter` utiliza renderização baseada em CPU sem aceleração por hardware, o que pode impactar a taxa de quadros nas animações de percurso em árvores com centenas de nós simultâneos.
 
 ---
