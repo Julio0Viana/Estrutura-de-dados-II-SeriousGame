@@ -1,4 +1,4 @@
-# Visualizador de Árvore Binária de Busca (BST)
+# Visualizador de Árvore Binária de Busca (BST) 
 
 Projeto de modernização, refatoração e expansão funcional de um visualizador interativo de Árvore Binária de Busca (BST) desenvolvido em Python. 
 
@@ -25,6 +25,7 @@ A versão original foi totalmente reformulada para corrigir limitações estrutu
 ## Fundamentação Teórica e Inovações
 
 A **Árvore Binária de Busca (BST)** é uma estrutura de dados hierárquica que mantém a propriedade de ordenação: para qualquer nó $N$, todos os elementos na subárvore esquerda possuem valores estritamente menores ($V_{esq} < V_N$) e todos os elementos na subárvore direita possuem valores estritamente maiores ($V_{dir} > V_N$).
+A **Árvore AVL(balanceada pela altura)** é outra estrutura de dados que traz maior eficiência na complexidade de tempo por gerar balanceamento com rotações. Ela impede que a árvore se degenere em lista encadeada e diminui a altura da árvore em no máximo 1. 
 
 ### O Rigor Teórico das Inovações Aplicadas:
 
@@ -64,6 +65,7 @@ A **Árvore Binária de Busca (BST)** é uma estrutura de dados hierárquica que
 ### 1. Limitações do Código Original (Superadas)
 * **Limitação Didática:** Impedia o estudante de visualizar o comportamento da estrutura de dados ao atingir profundidades maiores que 4 níveis ou em casos de degeneração.
 * **Limitação Técnica:** Forte acoplamento entre a lógica de negócio e a interface gráfica (manipulação direta de elementos do `Canvas` misturada com estruturas de dados em listas de listas).
+* **Limitação Técnica:** Tinha apenas a árvore simples de busca binária na mecânica original do jogo. Foi implementada a opção de switch que gera uma AVL.
 
 ### 2. Limitações da Versão Atual (Trabalhos Futuros)
 * **Limitação Didática:** Árvores puras muito profundas exigem uso frequente do Zoom/Pan.
