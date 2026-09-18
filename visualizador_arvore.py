@@ -10,11 +10,12 @@ ctk.set_default_color_theme("blue")
 
 
 class NoArvore:
-    """Representação de cada Nó da BST."""
+    """Representação de cada Nó da Árvore (BST/AVL)."""
     def __init__(self, valor):
         self.valor = valor
         self.esquerda = None
         self.direita = None
+        self.altura = 1  # Necessário para o balanceamento AVL
         self.x = 0
         self.y = 0
 
@@ -99,7 +100,7 @@ class VisualizadorBST(ctk.CTk):
     def __init__(self):
         super().__init__()
 
-        self.title("Visualizador de Árvore Binária de Busca (BST)")
+        self.title("Visualizador de Árvores Binárias (BST & AVL)")
         self.geometry("1250x780")
         self.minsize(1000, 600)
 
@@ -116,6 +117,9 @@ class VisualizadorBST(ctk.CTk):
         # Estado da aba retrátil
         self.aba_percursos_aberta = False
 
+        # Modo da Árvore: BST Simples vs AVL
+        self.modo_avl = tk.BooleanVar(value=True)
+
         self._criar_layout()
 
     def _criar_layout(self):
@@ -123,7 +127,19 @@ class VisualizadorBST(ctk.CTk):
         self.frame_controle = ctk.CTkFrame(self, width=300, corner_radius=15)
         self.frame_controle.pack(side=tk.LEFT, fill=tk.Y, padx=15, pady=15)
 
-        ctk.CTkLabel(self.frame_controle, text="Painel de Controle", font=ctk.CTkFont(size=20, weight="bold")).pack(padx=20, pady=(20, 15))
+        ctk.CTkLabel(self.frame_controle, text="Painel de Controle", font=ctk.CTkFont(size=20, weight="bold")).pack(padx=20, pady=(20, 10))
+
+        # Switch de Ativação do Modo AVL
+        self.switch_avl = ctk.CTkSwitch(
+            self.frame_controle,
+            text="Modo Árvore AVL (Balanceada)",
+            variable=self.modo_avl,
+            onvalue=True,
+            offvalue=False,
+            font=ctk.CTkFont(size=12, weight="bold"),
+            progress_color="#2EA043"
+        )
+        self.switch_avl.pack(padx=20, pady=(0, 15))
 
         # Botões Principais de Edição da Árvore
         ctk.CTkButton(self.frame_controle, text="Inserir Nó", command=self.solicitar_insercao, fg_color="#2EA043", hover_color="#238636").pack(padx=20, pady=5, fill=tk.X)
@@ -209,7 +225,7 @@ class VisualizadorBST(ctk.CTk):
         clicou_no = self._buscar_no_por_coordenada(self.raiz, event.x, event.y)
         if clicou_no:
             self.no_selecionado = clicou_no
-            self.lbl_status.configure(text=f"Status: Nó {clicou_no.valor} selecionado. Aperte Delete para remover.")
+            self.lbl_status.configure(text=f"Status: Nó {clicou_no.valor} selecionado (Altura: {clicou_no.altura}, FB: {self._fator_balanceamento(clicou_no)}). Aperte Delete para remover.")
         else:
             self.no_selecionado = None
             
@@ -293,7 +309,47 @@ class VisualizadorBST(ctk.CTk):
             self.lbl_status.configure(text=f"Status: Nó {val} removido!")
             self.atualizar_desenho()
 
-    # --- LÓGICA DA BST ---
+    # --- LÓGICA DE ÁRVORE AVL & BST ---
+
+    def _altura(self, no):
+        return no.altura if no else 0
+
+    def _fator_balanceamento(self, no):
+        if not no:
+            return 0
+        return self._altura(no.esquerda) - self._altura(no.direita)
+
+    def _atualizar_altura(self, no):
+        if no:
+            no.altura = 1 + max(self._altura(no.esquerda), self._altura(no.direita))
+
+    def _rotacao_direita(self, y):
+        x = y.esquerda
+        T2 = x.direita
+
+        # Executa Rotação
+        x.direita = y
+        y.esquerda = T2
+
+        # Atualiza Alturas
+        self._atualizar_altura(y)
+        self._atualizar_altura(x)
+
+        return x
+
+    def _rotacao_esquerda(self, x):
+        y = x.direita
+        T2 = y.esquerda
+
+        # Executa Rotação
+        y.esquerda = x
+        x.direita = T2
+
+        # Atualiza Alturas
+        self._atualizar_altura(x)
+        self._atualizar_altura(y)
+
+        return y
 
     def _inserir_rec(self, no, valor, avisar_duplicado=True):
         if no is None:
@@ -305,11 +361,42 @@ class VisualizadorBST(ctk.CTk):
         else:
             if avisar_duplicado:
                 messagebox.showwarning("Valor Duplicado", f"O valor {valor} já existe na árvore.")
+            return no
+
+        # Atualiza a altura do nó pai atual
+        self._atualizar_altura(no)
+
+        # Se o modo AVL estiver desativado, retorna como BST tradicional
+        if not self.modo_avl.get():
+            return no
+
+        # Verifica e aplica o Balanceamento AVL
+        fb = self._fator_balanceamento(no)
+
+        # Caso LL (Esquerda-Esquerda) -> Rotação Simples à Direita
+        if fb > 1 and valor < no.esquerda.valor:
+            return self._rotacao_direita(no)
+
+        # Caso RR (Direita-Direita) -> Rotação Simples à Esquerda
+        if fb < -1 and valor > no.direita.valor:
+            return self._rotacao_esquerda(no)
+
+        # Caso LR (Esquerda-Direita) -> Rotação Dupla à Direita
+        if fb > 1 and valor > no.esquerda.valor:
+            no.esquerda = self._rotacao_esquerda(no.esquerda)
+            return self._rotacao_direita(no)
+
+        # Caso RL (Direita-Esquerda) -> Rotação Dupla à Esquerda
+        if fb < -1 and valor < no.direita.valor:
+            no.direita = self._rotacao_direita(no.direita)
+            return self._rotacao_esquerda(no)
+
         return no
 
     def _remover_rec(self, no, valor):
         if no is None:
             return no
+
         if valor < no.valor:
             no.esquerda = self._remover_rec(no.esquerda, valor)
         elif valor > no.valor:
@@ -322,6 +409,38 @@ class VisualizadorBST(ctk.CTk):
             temp = self._no_min_valor(no.direita)
             no.valor = temp.valor
             no.direita = self._remover_rec(no.direita, temp.valor)
+
+        if no is None:
+            return no
+
+        # Atualiza altura do nó
+        self._atualizar_altura(no)
+
+        # Se o modo AVL estiver desativado, retorna como BST tradicional
+        if not self.modo_avl.get():
+            return no
+
+        # Rebalanceamento AVL após remoção
+        fb = self._fator_balanceamento(no)
+
+        # Caso LL
+        if fb > 1 and self._fator_balanceamento(no.esquerda) >= 0:
+            return self._rotacao_direita(no)
+
+        # Caso LR
+        if fb > 1 and self._fator_balanceamento(no.esquerda) < 0:
+            no.esquerda = self._rotacao_esquerda(no.esquerda)
+            return self._rotacao_direita(no)
+
+        # Caso RR
+        if fb < -1 and self._fator_balanceamento(no.direita) <= 0:
+            return self._rotacao_esquerda(no)
+
+        # Caso RL
+        if fb < -1 and self._fator_balanceamento(no.direita) > 0:
+            no.direita = self._rotacao_direita(no.direita)
+            return self._rotacao_esquerda(no)
+
         return no
 
     def _no_min_valor(self, no):
@@ -341,7 +460,8 @@ class VisualizadorBST(ctk.CTk):
         for val in valores:
             self.raiz = self._inserir_rec(self.raiz, val, avisar_duplicado=False)
 
-        self.lbl_status.configure(text=f"Status: {quantidade} nós inseridos no modo '{modo}'.")
+        tipo_arvore = "AVL" if self.modo_avl.get() else "BST"
+        self.lbl_status.configure(text=f"Status: {quantidade} nós inseridos ({tipo_arvore}) no modo '{modo}'.")
         self.atualizar_desenho()
 
     def limpar_arvore(self):
