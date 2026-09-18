@@ -55,7 +55,7 @@ A **Árvore AVL(balanceada pela altura)** é outra estrutura de dados que traz m
 | **Entrada de Dados** | Caixas de texto fixas no painel principal. | Diálogos modais sob demanda (`CTkInputDialog`). |
 | **Interatividade** | Somente via botões da interface. | Clique direto no nó + remoção por teclado (`Delete`). |
 | **Inclusão em Massa** | Apenas inserção individual manual. | Gerador automático de 1 a 99 nós (Aleatório/Crescente/Decrescente). |
-| Apenas **Árvore BST** | Árvore de busca binária simples com complexidade O(n) na maioria dos casos | Árvore BST e Árvore AVL com complexidade de tempo O(log n) na maioria dos casos com rotações de balanceamento |
+| Apenas **Árvore BST** | Árvore Binária de Busca com complexidade O(n) na maioria dos casos | Árvore BST + Árvore AVL com complexidade de tempo O(log n) na maioria dos casos com rotações de balanceamento |
 | **Idiomas e Localização** | Inglês com nomenclaturas mistas. | **Português (pt-BR)** padronizado. |
 
 ---
